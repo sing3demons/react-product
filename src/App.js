@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function App() {
   const initialState = {
@@ -6,18 +6,23 @@ export default function App() {
     lastName: '',
   }
   const [name, setName] = useState(initialState)
+  const { firstName, lastName } = name
+  useEffect(() => {
+    console.log('hello ' + firstName)
+  }, [firstName])
+  
   return (
     <>
       <input
         type="text"
         onChange={(e) => setName({ ...name, firstName: e.target.value })}
       />
-      <br/>
+      <br />
       <input
         type="text"
         onChange={(event) => setName({ ...name, lastName: event.target.value })}
       />
-     
+
       <div>{name.firstName}</div>
       <div>{name.lastName}</div>
     </>
