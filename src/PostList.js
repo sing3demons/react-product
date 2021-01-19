@@ -8,7 +8,7 @@ export default function PostList() {
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true)
-      const { data } = await axios.get('http://localhost:8080/api/v2/products')
+      const { data } = await axios.get('/products')
 
       setPosts(data.products.items)
     }
@@ -22,7 +22,7 @@ export default function PostList() {
     <ul>
       {posts.map((post) => (
         <li key={post.id}>
-          {post.id}, {post.name}, {post.desc}
+          {post.id}, {post.name}, {post.desc} {post.category.name}
         </li>
       ))}
     </ul>
