@@ -1,6 +1,6 @@
+import Layout from 'modules/ui/components/Layout'
 import React from 'react'
-import PostList from './PostList'
 
 export default function App() {
-  return <PostList></PostList>
+  return <Layout />
 }
