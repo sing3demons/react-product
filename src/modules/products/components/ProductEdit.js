@@ -9,7 +9,6 @@ import {
   Typography,
   Button,
 } from '@material-ui/core'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
 
@@ -24,18 +23,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ProductAdd() {
+export default function ProductEdit() {
   const classes = useStyles()
-
-  const schema = yup.object().shape({
-    name: yup.string().required(),
-    desc: yup.string().required(),
-    price: yup.number().positive().integer().required(),
-    categoryId: yup.number().required(),
-  })
-
   const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(schema),
+    mode: 'onBlur',
+    validationSchema: yup.object().shape({
+      name: yup.string().required(),
+      desc: yup.string().required(),
+      price: yup.number().positive().integer().required(),
+      CategoryID: yup.number().required(),
+    }),
   })
 
   const submit = async (product) => {
@@ -59,7 +56,7 @@ export default function ProductAdd() {
       <Card>
         <CardContent className={classes.form}>
           <Typography variant="h5" component="h2">
-            Add Product
+            Edit Product
           </Typography>
           <TextField
             name="name"
@@ -105,17 +102,7 @@ export default function ProductAdd() {
             helperText={errors.categoryId?.message || ''}
             error={!!errors.categoryId}
           />
-          <input
-            // ref={register}
-            type="file"
-            name="image"
-            ref={register({
-              required: 'กรุณาเลือกไฟล์ภาพก่อน',
-              validate: {
-                checkFileType: (value) => {},
-              },
-            })}
-          />
+          <input ref={register} type="file" name="image" />
         </CardContent>
         <CardActions>
           <Button
@@ -124,7 +111,7 @@ export default function ProductAdd() {
             color="primary"
             className={classes.submitBtn}
           >
-            Add Product
+            Update
           </Button>
         </CardActions>
       </Card>

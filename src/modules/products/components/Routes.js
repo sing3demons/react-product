@@ -1,17 +1,16 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import ProductAdd from './ProductAdd'
+import ProductEdit from './ProductEdit'
 import ProductList from './ProductList'
 
 export default function Routes() {
+  const { path } = useRouteMatch()
   return (
     <Switch>
-      <Route exact path="/products">
-        <ProductList />
-      </Route>
-      <Route path="/products/edit">
-        <ProductAdd />
-      </Route>
+      <Route path={`${path}/create`} component={ProductAdd} />
+      <Route path={`${path}/:id`} component={ProductEdit} />
+      <Route exact path={`${path}`} component={ProductList} />
     </Switch>
   )
 }
