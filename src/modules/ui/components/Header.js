@@ -1,21 +1,39 @@
-import React from 'react'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+
 import {
   AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
   Badge,
-  MenuItem,
+  FormControlLabel,
+  IconButton,
+  Link,
   Menu,
+  MenuItem,
+  Switch,
+  Toolbar,
 } from '@material-ui/core'
+import { Link as RouterLink } from 'react-router-dom'
+import logo from 'assets/images/logo.png'
 
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import { AccountCircle, ShoppingCart } from '@material-ui/icons'
 import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 
 const useStyles = makeStyles((theme) => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer,
+  },
+  logoLink: {
+    marginRight: theme.spacing(2),
+  },
+  logoImage: {
+    width: 30,
+    height: 30,
+  },
+  spacer: {
+    flexGrow: 1,
+  },
   grow: {
     flexGrow: 1,
   },
@@ -45,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -129,22 +147,39 @@ export default function Header() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
-          </Typography>
+          <Link
+            component={RouterLink}
+            to="/"
+            color="inherit"
+            underline="none"
+            className={classes.logoLink}
+          >
+            <img
+              src={logo}
+              alt="Babel Shopping"
+              className={classes.logoImage}
+            />
+          </Link>
+          <Link
+            component={RouterLink}
+            to="/products"
+            color="inherit"
+            underline="none"
+          >
+            Products
+          </Link>
+          <div className={classes.spacer}></div>
+          <FormControlLabel
+            control={<Switch color="secondary" />}
+            label="Dark"
+          ></FormControlLabel>
+          <IconButton color="inherit">
+            <Badge color="secondary">
+              <ShoppingCart></ShoppingCart>
+            </Badge>
+          </IconButton>
 
-          <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"

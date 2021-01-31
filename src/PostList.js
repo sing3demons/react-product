@@ -9,11 +9,10 @@ export default function PostList() {
     const fetchPosts = async () => {
       setIsLoading(true)
       const { data } = await axios.get('/products')
-
       setPosts(data.products.items)
+      setIsLoading(false) //show Loading...
     }
     fetchPosts()
-    setIsLoading(false) //show Loading...
   }, [])
 
   if (isLoading) return <div>Loading...</div> //show Loading...
