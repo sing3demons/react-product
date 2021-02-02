@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Typography, Grid, CircularProgress } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
+import queryString from 'query-string'
+
+import CategoryList from './CategoryList'
+import ProductItem from './ProductItem'
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(2),
+  },
+  progress: {
+    textAlign: 'center',
+  },
+}))
 
 export default function ProductList() {
-  const [posts, setPosts] = useState([])
+  const classes = useStyles()
+  const { search } = useLocation()
+  const { category } = queryString.parse(search)
+  const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const fetchPosts = async () => {
+  const loadProducts = async () => {
     setIsLoading(true)
-    const { data } = await axios.get('/products?limit=30')
-    setPosts(data.products.items)
+    const { data } = await axios.get(`/products`)
+
+    setProducts(data.products.items)
+    // console.log(data.products.items);
     setIsLoading(false)
   }
 
   useEffect(() => {
-    fetchPosts()
+    loadProducts()
   }, [])
 
   if (isLoading) return <div>Loading...</div> //show Loading...
   return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>Products</h1>
-      <ul>
-        {posts.map((post) => (
-          <li style={{ display: 'flex' }} key={post.id}>
-            {post.id} {post.name}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Typography variant="h4" component="h1" className={classes.title}>
+        {category || 'All'} Products
+      </Typography>
+      <CategoryList></CategoryList>
+      {isLoading ? (
+        <div className={classes.progress}>
+          <CircularProgress color="secondary"></CircularProgress>
+        </div>
+      ) : (
+        <Grid container spacing={2}>
+          {products.map((product) => (
+            <ProductItem key={product.id} {...product}></ProductItem>
+          ))}
+        </Grid>
+      )}
+    </>
   )
 }

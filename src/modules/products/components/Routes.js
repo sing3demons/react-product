@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import ProductAdd from './ProductAdd'
-import ProductEdit from './ProductEdit'
+import ProductDetail from './ProductDetail'
 import ProductList from './ProductList'
 
 export default function Routes() {
@@ -9,7 +9,7 @@ export default function Routes() {
   return (
     <Switch>
       <Route path={`${path}/create`} component={ProductAdd} />
-      <Route path={`${path}/:id`} component={ProductEdit} />
+      <Route path={`${path}/:id`} component={ProductDetail} />
       <Route exact path={`${path}`} component={ProductList} />
     </Switch>
   )

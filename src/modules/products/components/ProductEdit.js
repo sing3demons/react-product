@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core/styles'
+import { useParams } from 'react-router-dom'
 import {
   TextField,
   CardActions,
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductEdit() {
   const classes = useStyles()
+  const { id } = useParams()
+  const [product, setProduct] = useState()
   const { register, handleSubmit, errors } = useForm({
     mode: 'onBlur',
     validationSchema: yup.object().shape({
@@ -34,6 +37,17 @@ export default function ProductEdit() {
       CategoryID: yup.number().required(),
     }),
   })
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      const { data } = await axios.get(`/products/${id}`)
+
+      setProduct(data)
+      console.log(data)
+    }
+
+    loadProduct()
+  }, [id])
 
   const submit = async (product) => {
     try {
