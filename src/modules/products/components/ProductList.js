@@ -23,26 +23,34 @@ export default function ProductList() {
   const { search } = useLocation()
   const { category } = queryString.parse(search)
   const [products, setProducts] = useState([])
+
   const [isLoading, setIsLoading] = useState(false)
 
-  const loadProducts = async () => {
-    setIsLoading(true)
-    const { data } = await axios.get(`/products`)
-
-    setProducts(data.products.items)
-    // console.log(data.products.items);
-    setIsLoading(false)
-  }
-
   useEffect(() => {
-    loadProducts()
-  }, [])
+    const loadProducts = async () => {
+      setIsLoading(true)
+      const { data } = await axios.get(`/products${search}`)
+      setProducts(data.products.items)
+      setIsLoading(false)
+    }
 
-  if (isLoading) return <div>Loading...</div> //show Loading...
+    loadProducts()
+  }, [search])
+
   return (
-    <>
+    <div>
       <Typography variant="h4" component="h1" className={classes.title}>
-        {category || 'All'} Products
+        {category ? (
+          <>
+            {
+              products.map((product) => {
+                return `${product.category.name} Products`
+              })[0]
+            }
+          </>
+        ) : (
+          <>All Products</>
+        )}
       </Typography>
       <CategoryList></CategoryList>
       {isLoading ? (
@@ -56,6 +64,6 @@ export default function ProductList() {
           ))}
         </Grid>
       )}
-    </>
+    </div>
   )
 }

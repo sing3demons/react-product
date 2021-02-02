@@ -1,53 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Grid } from '@material-ui/core'
-// import {
-//   Headset,
-//   Watch,
-//   CameraAlt,
-//   Nature,
-//   Computer,
-//   Book,
-//   InvertColors,
-//   Visibility,
-// } from '@material-ui/icons'
+
 import { makeStyles } from '@material-ui/core/styles'
 import CategoryItem from './CategoryItem'
 import axios from 'axios'
-
-// const CATEGORIES = [
-//   {
-//     title: 'Headphone',
-//     Icon: Headset,
-//   },
-//   {
-//     title: 'Watch',
-//     Icon: Watch,
-//   },
-//   {
-//     title: 'Camera',
-//     Icon: CameraAlt,
-//   },
-//   {
-//     title: 'Nature',
-//     Icon: Nature,
-//   },
-//   {
-//     title: 'Computer',
-//     Icon: Computer,
-//   },
-//   {
-//     title: 'Book',
-//     Icon: Book,
-//   },
-//   {
-//     title: 'Lotion',
-//     Icon: InvertColors,
-//   },
-//   {
-//     title: 'Eyeglass',
-//     Icon: Visibility,
-//   },
-// ]
 
 const useStyles = makeStyles((theme) => ({
   root: {
