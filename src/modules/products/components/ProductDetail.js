@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Grid, Paper, Typography, ButtonGroup, Button } from '@material-ui/core'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import * as actions from '../actions'
 
@@ -25,27 +24,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductDetail() {
   const { id } = useParams()
-  // const [product, setProducts] = useState([])
   const dispatch = useDispatch()
   const [product] = useSelector((state) => state.products.items)
   const classes = useStyles()
   const history = useHistory()
   const theme = useTheme()
   const isMediumUp = useMediaQuery(theme.breakpoints.up('md'))
-
-  // useEffect(() => {
-  //   const getProduct = async () => {
-  //     const { data } = await axios.get(`/products/${id}`)
-  //     setProducts(data.product)
-  //   }
-
-  //   getProduct()
-  // }, [id])
+  const action = actions.loadProduct(id)
 
   useEffect(() => {
-    const action = actions.loadProduct(id)
     dispatch(action)
-  }, [id])
+  }, [dispatch, id])
 
   const buyNow = () => {
     history.push('/cart')

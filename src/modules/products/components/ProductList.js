@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import queryString from 'query-string'
 
 import * as actions from '../actions'
-import CategoryList from './CategoryList'
+import CategoryList from '../../category/components/CategoryList'
 import ProductItem from './ProductItem'
 import { useDispatch, useSelector } from 'react-redux'
 
