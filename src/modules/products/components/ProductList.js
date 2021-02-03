@@ -27,7 +27,7 @@ export default function ProductList() {
   const { isLoading, items: products } = useSelector((state) => state.products)
 
   useEffect(() => {
-    const action = actions.loadProduct(search)
+    const action = actions.loadProducts(search)
     dispatch(action)
   }, [dispatch, search])
 
