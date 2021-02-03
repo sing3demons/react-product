@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-
 import {
   AppBar,
   Badge,
@@ -12,13 +11,16 @@ import {
   Switch,
   Toolbar,
 } from '@material-ui/core'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 import logo from 'assets/images/logo.png'
 
 import { AccountCircle, ShoppingCart } from '@material-ui/icons'
 import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
+import { useDispatch, useSelector } from 'react-redux'
+
+import * as actions from '../actions'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -63,6 +65,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useDispatch()
+
+  const darkMode = useSelector((state) => state.ui.darkMode)
+
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
 
@@ -142,6 +149,8 @@ export default function Header() {
       </MenuItem>
     </Menu>
   )
+  const navigateToCart = () => history.push('/cart')
+  const toggleDarkMode = () => dispatch(actions.toggleDarkMode())
 
   return (
     <div className={classes.grow}>
@@ -170,10 +179,16 @@ export default function Header() {
           </Link>
           <div className={classes.spacer}></div>
           <FormControlLabel
-            control={<Switch color="secondary" />}
+            control={
+              <Switch
+                color="secondary"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+              />
+            }
             label="Dark"
           ></FormControlLabel>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={navigateToCart}>
             <Badge color="secondary">
               <ShoppingCart></ShoppingCart>
             </Badge>
