@@ -3,7 +3,6 @@ import {
   LOAD_PRODUCTS_SUCCESS,
   LOAD_PRODUCTS_FAILURE,
 } from './actions'
-
 const initialState = {
   isLoading: false,
   items: [],

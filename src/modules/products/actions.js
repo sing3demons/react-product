@@ -1,13 +1,12 @@
 import axios from 'axios'
 
-const LOAD_PRODUCTS_REQUEST = 'app/peoducts/LOAD_PRODUCTS_REQUEST'
-const LOAD_PRODUCTS_SUCCESS = 'app/peoducts/LOAD_PRODUCTS_SUCCESS'
-const LOAD_PRODUCTS_FAILURE = 'app/peoducts/LOAD_PRODUCTS_FAILURE'
+const LOAD_PRODUCTS_REQUEST = 'app/products/LOAD_PRODUCTS_REQUEST'
+const LOAD_PRODUCTS_SUCCESS = 'app/products/LOAD_PRODUCTS_SUCCESS'
+const LOAD_PRODUCTS_FAILURE = 'app/products/LOAD_PRODUCTS_FAILURE'
 
 function loadProduct(query) {
   return async (dispatch) => {
     dispatch({ type: LOAD_PRODUCTS_REQUEST })
-
     try {
       const { data } = await axios.get(`/products${query}`)
       dispatch({
