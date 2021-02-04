@@ -20,7 +20,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as actions from '../actions'
+import * as productActions from '../actions'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -69,6 +69,7 @@ export default function Header() {
   const dispatch = useDispatch()
 
   const darkMode = useSelector((state) => state.ui.darkMode)
+  const cartCount = useSelector((state) => state.cart.productIds).length
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
@@ -150,7 +151,7 @@ export default function Header() {
     </Menu>
   )
   const navigateToCart = () => history.push('/cart')
-  const toggleDarkMode = () => dispatch(actions.toggleDarkMode())
+  const toggleDarkMode = () => dispatch(productActions.toggleDarkMode())
 
   return (
     <div className={classes.grow}>
@@ -189,7 +190,7 @@ export default function Header() {
             label="Dark"
           ></FormControlLabel>
           <IconButton color="inherit" onClick={navigateToCart}>
-            <Badge color="secondary">
+            <Badge badgeContent={cartCount} color="secondary">
               <ShoppingCart></ShoppingCart>
             </Badge>
           </IconButton>

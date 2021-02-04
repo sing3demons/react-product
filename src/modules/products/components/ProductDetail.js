@@ -5,7 +5,8 @@ import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Grid, Paper, Typography, ButtonGroup, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import * as actions from '../actions'
+import * as productAction from '../actions'
+import * as cartActions from 'modules/cart/actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,17 +27,22 @@ export default function ProductDetail() {
   const { id } = useParams()
   const dispatch = useDispatch()
   const [product] = useSelector((state) => state.products.items)
+  const { productIds } = useSelector((state) => state.cart)
+  const exists = productIds.includes(id)
   const classes = useStyles()
   const history = useHistory()
   const theme = useTheme()
   const isMediumUp = useMediaQuery(theme.breakpoints.up('md'))
-  const action = actions.loadProduct(id)
+  // const action = productAction.loadProduct(id)
 
   useEffect(() => {
-    dispatch(action)
+    dispatch(productAction.loadProduct(id))
   }, [dispatch, id])
 
+  const addToCart = () => dispatch(cartActions.addToCart(id))
+
   const buyNow = () => {
+    addToCart()
     history.push('/cart')
   }
 
@@ -65,16 +71,18 @@ export default function ProductDetail() {
               </Typography>
               <p>{product.desc}</p>
             </Grid>
-            <Grid item>
-              <ButtonGroup
-                variant="contained"
-                color="primary"
-                aria-label="primary button group"
-              >
-                <Button onClick={buyNow}>Buy Now</Button>
-                <Button>Add to Cart</Button>
-              </ButtonGroup>
-            </Grid>
+            {!exists && (
+              <Grid item>
+                <ButtonGroup
+                  variant="contained"
+                  color="primary"
+                  aria-label="primary button group"
+                >
+                  <Button onClick={buyNow}>Buy Now</Button>
+                  <Button onClick={addToCart}>Add to Cart</Button>
+                </ButtonGroup>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Grid>

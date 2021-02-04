@@ -15,7 +15,7 @@ export default function Cart() {
   return (
     <>
       <Typography variant="h4" component="h1" className={classes.title}>
-        Oder Summary
+        Order Summary
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={8}>

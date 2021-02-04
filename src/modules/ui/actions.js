@@ -1,13 +1,13 @@
-export const TOGGLE_DARK_MODE = 'app/ui/TOGGLE_DARK_MODE'
-export const SET_DARK_MODE = 'app/ui/SET_DARK_MODE'
+const TOGGLE_DARK_MODE = 'app/ui/TOGGLE_DARK_MODE'
+const SET_DARK_MODE = 'app/ui/SET_DARK_MODE'
 
-export function toggleDarkMode() {
+function toggleDarkMode() {
   return {
     type: TOGGLE_DARK_MODE,
   }
 }
 
-export function setDarkMode(darkMode) {
+function setDarkMode(darkMode) {
   return {
     type: SET_DARK_MODE,
     payload: {
@@ -15,3 +15,5 @@ export function setDarkMode(darkMode) {
     },
   }
 }
+
+export { TOGGLE_DARK_MODE, SET_DARK_MODE, toggleDarkMode, setDarkMode }
