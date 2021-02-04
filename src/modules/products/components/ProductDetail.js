@@ -27,8 +27,8 @@ export default function ProductDetail() {
   const { id } = useParams()
   const dispatch = useDispatch()
   const [product] = useSelector((state) => state.products.items)
-  const { productIds } = useSelector((state) => state.cart)
-  const exists = productIds.includes(id)
+  const { cart } = useSelector((state) => state.cart)
+  // const exists = productIds.includes(id)
   const classes = useStyles()
   const history = useHistory()
   const theme = useTheme()
@@ -39,7 +39,17 @@ export default function ProductDetail() {
     dispatch(productAction.loadProduct(id))
   }, [dispatch, id])
 
-  const addToCart = () => dispatch(cartActions.addToCart(id))
+  const addToCart = () => {
+    const products = {
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      qty: 1,
+    }
+
+    dispatch(cartActions.addToCart(products, cart))
+  }
 
   const buyNow = () => {
     addToCart()
@@ -71,18 +81,16 @@ export default function ProductDetail() {
               </Typography>
               <p>{product.desc}</p>
             </Grid>
-            {!exists && (
-              <Grid item>
-                <ButtonGroup
-                  variant="contained"
-                  color="primary"
-                  aria-label="primary button group"
-                >
-                  <Button onClick={buyNow}>Buy Now</Button>
-                  <Button onClick={addToCart}>Add to Cart</Button>
-                </ButtonGroup>
-              </Grid>
-            )}
+            <Grid item>
+              <ButtonGroup
+                variant="contained"
+                color="primary"
+                aria-label="primary button group"
+              >
+                <Button onClick={buyNow}>Buy Now</Button>
+                <Button onClick={addToCart}>Add to Cart</Button>
+              </ButtonGroup>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

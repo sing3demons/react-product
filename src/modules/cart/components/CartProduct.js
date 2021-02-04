@@ -24,8 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function CartProduct({ image, name, price }) {
+export default function CartProduct({ image, name, price, qty }) {
   const classes = useStyles()
+
+  const removeCart = () => {}
 
   return (
     <Card className={classes.product}>
@@ -37,10 +39,12 @@ export default function CartProduct({ image, name, price }) {
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
             <div>{currencyFormat(price)}</div>
+            <div>จำนวน: {qty}</div>
+            <div>รวม: {currencyFormat(qty * price)}</div>
           </Grid>
           <Grid item>
             <IconButton aria-label="delete" size="small">
-              <Delete></Delete>
+              <Delete onClick={removeCart}></Delete>
             </IconButton>
           </Grid>
         </Grid>

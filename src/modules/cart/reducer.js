@@ -1,15 +1,18 @@
 import { ADD_TO_CART } from './actions'
 const initialState = {
-  price: 0,
-  productIds: [],
+  cart: [],
+  total: 0,
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_TO_CART:
-      const { productId } = action.payload
-      if (state.productIds.includes(productId)) return state
-      return { ...state, productIds: [...state.productIds, productId] }
+      return {
+        ...state,
+        cart: action.payload.cart,
+        total: action.payload.total,
+      }
     default:
       return state
   }

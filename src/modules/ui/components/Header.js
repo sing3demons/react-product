@@ -69,7 +69,7 @@ export default function Header() {
   const dispatch = useDispatch()
 
   const darkMode = useSelector((state) => state.ui.darkMode)
-  const cartCount = useSelector((state) => state.cart.productIds).length
+  const cartCount = useSelector((state) => state.cart.total)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
