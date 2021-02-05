@@ -17,6 +17,7 @@ function addToCart(product = {}, cart = []) {
   }
 
   const total = cart.reduce((totalQty, product) => totalQty + product.qty, 0)
+  //   localStorage.setItem('cart', JSON.stringify(cart))
   return {
     type: ADD_TO_CART,
     payload: {
@@ -27,6 +28,7 @@ function addToCart(product = {}, cart = []) {
 }
 
 function removeFromCart(id, productQty, cart = []) {
+  //   localStorage.setItem('cart', JSON.stringify(cart))
   return {
     type: REMOVE_FROM_CART,
     payload: {

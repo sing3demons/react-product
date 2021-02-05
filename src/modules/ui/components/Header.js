@@ -14,10 +14,14 @@ import {
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import logo from 'assets/images/logo.png'
 
-import { AccountCircle, ShoppingCart } from '@material-ui/icons'
-import MailIcon from '@material-ui/icons/Mail'
-import NotificationsIcon from '@material-ui/icons/Notifications'
-import MoreIcon from '@material-ui/icons/MoreVert'
+import {
+  AccountCircle,
+  ShoppingCart,
+  Mail as MailIcon,
+  Notifications as NotificationsIcon,
+  MoreVert as MoreIcon,
+} from '@material-ui/icons'
+
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as productActions from '../actions'
@@ -106,8 +110,17 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link underline="none" color="inherit" component={RouterLink} to="/user">
+        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+      </Link>
+      <Link
+        underline="none"
+        color="inherit"
+        component={RouterLink}
+        to="/user/register"
+      >
+        <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+      </Link>
     </Menu>
   )
 
@@ -122,22 +135,6 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -157,7 +154,7 @@ export default function Header() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Link
             component={RouterLink}
