@@ -43,24 +43,18 @@ export default function Login() {
   const classes = useStyles()
   const history = useHistory()
 
-  const [values, setValues] = useState({
-    password: '',
-    showPassword: false,
-  })
-  const handleChange = (prop) => (event) => {
+  const [values, setValues] = useState({ password: '', showPassword: false })
+  const handleChange = (prop) => (event) =>
     setValues({ ...values, [prop]: event.target.value })
-  }
 
-  const handleClickShowPassword = () => {
+  const handleClickShowPassword = () =>
     setValues({ ...values, showPassword: !values.showPassword })
-  }
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
+
+  const handleMouseDownPassword = (event) => event.preventDefault()
 
   const schema = yup.object().shape({
-    email: yup.string().required().email(),
-    password: yup.string().required(),
+    email: yup.string().required().email('รูปแบบอีเมล์ไม่ถูกต้อง'),
+    password: yup.string().required().min(4, 'รหัสผ่านต้อง 3 ตัวอักษรขึ้นไป'),
   })
 
   const { register, handleSubmit, errors } = useForm({

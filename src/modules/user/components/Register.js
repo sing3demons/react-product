@@ -19,6 +19,8 @@ import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import logo_auth from 'assets/images/authen_header.jpg'
 import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { useToasts } from 'react-toast-notifications'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 200,
   },
-
   form: {
     '& > * + *': {
       marginTop: theme.spacing(2),
@@ -42,33 +43,42 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
   const classes = useStyles()
   const history = useHistory()
+  const { addToast } = useToasts()
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
   })
-  const handleChange = (prop) => (event) => {
+  const handleChange = (prop) => (event) =>
     setValues({ ...values, [prop]: event.target.value })
-  }
 
-  const handleClickShowPassword = () => {
+  const handleClickShowPassword = () =>
     setValues({ ...values, showPassword: !values.showPassword })
-  }
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
+
+  const handleMouseDownPassword = (event) => event.preventDefault()
 
   const schema = yup.object().shape({
     name: yup.string().required(),
     email: yup.string().required().email(),
-    password: yup.string().required(),
+    password: yup.string().required().min(4, '4 ตัวขึ้นไป'),
   })
 
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   })
 
-  const submit = (deliveryInfo) => {
-    console.log(deliveryInfo)
+  const submit = async ({ email, password, name }) => {
+    try {
+      const { data } = await axios.post('/auth/register', {
+        email,
+        password,
+        name,
+      })
+      addToast(data.message, { appearance: 'success' })
+      history.replace('/users')
+    } catch (error) {
+      addToast(error.response.data.error, { appearance: 'error' })
+    }
   }
 
   return (
@@ -107,14 +117,12 @@ export default function Register() {
             />
 
             <OutlinedInput
-              id="password"
+              inputRef={register}
               type={values.showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={handleChange('password')}
-              inputRef={register}
               variant="outlined"
               label="Password"
-              placeholder="password"
               name="password"
               autoComplete="current-password"
               fullWidth

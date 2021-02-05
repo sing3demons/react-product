@@ -17,8 +17,6 @@ import logo from 'assets/images/logo.png'
 import {
   AccountCircle,
   ShoppingCart,
-  Mail as MailIcon,
-  Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
 } from '@material-ui/icons'
 

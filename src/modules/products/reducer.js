@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
       return { ...state, isLoading: false, items: [action.payload.product] }
     case LOAD_PRODUCTS_FAILURE:
     case LOAD_PRODUCT_FAILURE:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: true }
     default:
       return state
   }
