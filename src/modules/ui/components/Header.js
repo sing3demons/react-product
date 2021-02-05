@@ -70,6 +70,7 @@ export default function Header() {
 
   const darkMode = useSelector((state) => state.ui.darkMode)
   const cartCount = useSelector((state) => state.cart.total)
+  const cart = useSelector((state) => state.cart.cart)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
@@ -150,6 +151,7 @@ export default function Header() {
       </MenuItem>
     </Menu>
   )
+
   const navigateToCart = () => history.push('/cart')
   const toggleDarkMode = () => dispatch(productActions.toggleDarkMode())
 
@@ -190,9 +192,15 @@ export default function Header() {
             label="Dark"
           ></FormControlLabel>
           <IconButton color="inherit" onClick={navigateToCart}>
-            <Badge badgeContent={cartCount} color="secondary">
-              <ShoppingCart></ShoppingCart>
-            </Badge>
+            {Number.isInteger(cartCount) ? (
+              <Badge badgeContent={cartCount} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            ) : (
+              <Badge badgeContent={+cart.map((c) => c.qty)} color="secondary">
+                <ShoppingCart></ShoppingCart>
+              </Badge>
+            )}
           </IconButton>
 
           <div className={classes.sectionDesktop}>

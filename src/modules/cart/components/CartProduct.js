@@ -11,6 +11,8 @@ import {
 import { Delete } from '@material-ui/icons'
 
 import currencyFormat from 'utils/currencyFormat'
+import { useDispatch, useSelector } from 'react-redux'
+import * as actions from '../actions'
 
 const useStyles = makeStyles((theme) => ({
   product: {
@@ -24,10 +26,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function CartProduct({ image, name, price, qty }) {
+export default function CartProduct({ id, image, name, price, qty }) {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const { cart } = useSelector((state) => state.cart)
 
-  const removeCart = () => {}
+  const removeCart = () => {
+    dispatch(actions.removeFromCart(id, qty, cart))
+  }
 
   return (
     <Card className={classes.product}>
@@ -43,8 +49,8 @@ export default function CartProduct({ image, name, price, qty }) {
             <div>รวม: {currencyFormat(qty * price)}</div>
           </Grid>
           <Grid item>
-            <IconButton aria-label="delete" size="small">
-              <Delete onClick={removeCart}></Delete>
+            <IconButton aria-label="delete" size="small" onClick={removeCart}>
+              <Delete></Delete>
             </IconButton>
           </Grid>
         </Grid>
