@@ -19,10 +19,12 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-import logo_auth from 'assets/images/authen_header.jpg'
+import logo_auth from 'assets/images/auth_header.jpg'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useToasts } from 'react-toast-notifications'
+import * as userActions from '../actions'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,7 @@ export default function Login() {
   const classes = useStyles()
   const history = useHistory()
   const { addToast } = useToasts()
+  const dispatch = useDispatch()
 
   const [values, setValues] = useState({ password: '', showPassword: false })
   const handleChange = (prop) => (event) =>
@@ -58,7 +61,7 @@ export default function Login() {
   const handleMouseDownPassword = (event) => event.preventDefault()
 
   const schema = yup.object().shape({
-    email: yup.string().required().email('รูปแบบอีเมล์ไม่ถูกต้อง'),
+    email: yup.string().required().email('invalid email format'),
     password: yup.string().required().min(4),
   })
 
@@ -79,8 +82,10 @@ export default function Login() {
       localStorage.setItem('profile', JSON.stringify(getProfile.data.user))
 
       addToast('Login success', { appearance: 'success' })
+
+      const profileValue = JSON.parse(localStorage.getItem('profile'))
+      dispatch(userActions.updateProfile(profileValue))
       history.push('/')
-      history.go(0)
     } catch (error) {
       addToast(error.response.data.error, {
         appearance: 'error',
@@ -160,7 +165,7 @@ export default function Login() {
               size="small"
               color="primary"
               onClick={() => {
-                history.push('/user/register')
+                history.push('/users/register')
               }}
             >
               Register

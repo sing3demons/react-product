@@ -19,7 +19,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-import logo_auth from 'assets/images/authen_header.jpg'
+import logo_auth from 'assets/images/auth_header.jpg'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { useToasts } from 'react-toast-notifications'
@@ -103,7 +103,7 @@ export default function Register() {
               inputRef={register}
               variant="outlined"
               label="Name"
-              placeholder="Enter your fullname"
+              placeholder="Enter your full name"
               name="name"
               fullWidth
               helperText={errors.name?.message || ''}
@@ -168,7 +168,7 @@ export default function Register() {
               size="small"
               color="primary"
               onClick={() => {
-                history.push('/user')
+                history.push('/users')
               }}
             >
               Login

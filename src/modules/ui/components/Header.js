@@ -21,15 +21,13 @@ import {
 } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import * as productActions from '../actions'
+import * as usersActions from 'modules/user/actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     ...theme.typography.button,
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(1),
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer,
   },
   logoLink: {
     marginRight: theme.spacing(2),
@@ -43,15 +41,6 @@ const useStyles = makeStyles((theme) => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
   },
   sectionDesktop: {
     display: 'none',
@@ -71,7 +60,7 @@ export default function Header() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
-  const [profile, setProfile] = useState(null)
+  const { profile } = useSelector((state) => state.users)
 
   const darkMode = useSelector((state) => state.ui.darkMode)
   const cartCount = useSelector((state) => state.cart.total)
@@ -94,6 +83,47 @@ export default function Header() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
+
+  const checkProfile = (
+    <div>
+      {profile ? (
+        <div className={classes.root}>
+          <MenuItem>
+            <b>name: {profile.name}</b>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              localStorage.removeItem('token')
+              localStorage.removeItem('profile')
+              dispatch(usersActions.updateProfile(null))
+            }}
+          >
+            Logout
+          </MenuItem>
+        </div>
+      ) : (
+        <div className={classes.root}>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/users"
+          >
+            <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+          </Link>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/users/register"
+          >
+            <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+          </Link>
+        </div>
+      )}
+    </div>
+  )
+
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
@@ -105,43 +135,10 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {profile ? (
-        <div className={classes.root}>
-          <MenuItem>
-            <b>name: {profile.name}</b>
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              localStorage.removeItem('token')
-              localStorage.removeItem('profile')
-              history.go(0)
-            }}
-          >
-            Logout
-          </MenuItem>
-        </div>
-      ) : (
-        <div className={classes.root}>
-          <Link
-            underline="none"
-            color="inherit"
-            component={RouterLink}
-            to="/users"
-          >
-            <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-          </Link>
-          <Link
-            underline="none"
-            color="inherit"
-            component={RouterLink}
-            to="/users/register"
-          >
-            <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-          </Link>
-        </div>
-      )}
+      {checkProfile}
     </Menu>
   )
+
   const mobileMenuId = 'primary-search-account-menu-mobile'
   const renderMobileMenu = (
     <Menu
@@ -153,41 +150,7 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {profile ? (
-        <div className={classes.root}>
-          <MenuItem>
-            <b>name: {profile.name}</b>
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              localStorage.removeItem('token')
-              localStorage.removeItem('profile')
-              history.go(0)
-            }}
-          >
-            Logout
-          </MenuItem>
-        </div>
-      ) : (
-        <div>
-          <Link
-            underline="none"
-            color="inherit"
-            component={RouterLink}
-            to="/users"
-          >
-            <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-          </Link>
-          <Link
-            underline="none"
-            color="inherit"
-            component={RouterLink}
-            to="/users/register"
-          >
-            <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-          </Link>
-        </div>
-      )}
+      {checkProfile}
     </Menu>
   )
 
@@ -197,7 +160,7 @@ export default function Header() {
   const getProfile = () => {
     const profileValue = JSON.parse(localStorage.getItem('profile'))
     if (profileValue) {
-      setProfile(profileValue)
+      dispatch(usersActions.updateProfile(profileValue))
     }
   }
 

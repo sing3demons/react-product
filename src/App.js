@@ -13,7 +13,7 @@ export default function App() {
       <ToastProvider
         autoDismiss
         autoDismissTimeout={3000}
-        placement="bottom-center"
+        placement="top-center"
       >
         <Router>
           <Layout />

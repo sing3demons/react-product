@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import userLogo from 'assets/images/user_logo.png'
+import { updateProfile } from 'modules/user/actions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -18,12 +20,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HomePage() {
   const classes = useStyles()
-  const [profile, setProfile] = useState(null)
+  const dispatch = useDispatch()
+  const { profile } = useSelector((state) => state.users)
 
   const getProfile = () => {
     const profileValue = JSON.parse(localStorage.getItem('profile'))
     if (profileValue) {
-      setProfile(profileValue)
+      dispatch(updateProfile(profileValue))
     }
   }
 

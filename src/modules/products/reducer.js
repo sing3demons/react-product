@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case LOAD_PRODUCTS_REQUEST:
     case LOAD_PRODUCT_REQUEST:
-      return { ...state, isLoading: true, items: [] }
+      return { ...state, isLoading: true, items: [], paging: {} }
     case LOAD_PRODUCTS_SUCCESS:
       return {
         ...state,

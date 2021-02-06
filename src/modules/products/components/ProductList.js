@@ -33,6 +33,7 @@ export default function ProductList() {
   const { isLoading, items: products, paging } = useSelector(
     (state) => state.products
   )
+  // console.log(paging)
 
   useEffect(() => {
     const action = actions.loadProducts(search)
@@ -60,18 +61,22 @@ export default function ProductList() {
           <CircularProgress color="secondary"></CircularProgress>
         </div>
       ) : (
-        <Grid container spacing={2}>
-          {products.map((product) => (
-            <ProductItem key={product.id} {...product}></ProductItem>
-          ))}
-        </Grid>
+        <div>
+          <Grid container spacing={2}>
+            {products.map((product) => (
+              <ProductItem key={product.id} {...product}></ProductItem>
+            ))}
+          </Grid>
+
+          <Pagination
+            className={classes.root}
+            count={paging.totalPage}
+            page={paging.page}
+            variant="outlined"
+            color="primary"
+          />
+        </div>
       )}
-      <Pagination
-        count={paging.totalPage}
-        page={paging.page}
-        variant="outlined"
-        color="primary"
-      />
     </div>
   )
 }
