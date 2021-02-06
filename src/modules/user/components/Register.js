@@ -13,6 +13,8 @@ import {
   OutlinedInput,
   Container,
   CardMedia,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -74,10 +76,13 @@ export default function Register() {
         password,
         name,
       })
-      addToast(data.message, { appearance: 'success' })
+      addToast(data.message, { appearance: 'success', autoDismiss: true })
       history.replace('/users')
     } catch (error) {
-      addToast(error.response.data.error, { appearance: 'error' })
+      addToast(error.response.data.message, {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -116,31 +121,36 @@ export default function Register() {
               error={!!errors.email}
             />
 
-            <OutlinedInput
-              inputRef={register}
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
-              variant="outlined"
-              label="Password"
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              helperText={errors.password?.message || ''}
-              error={!!errors.password}
-            />
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                inputRef={register}
+                name="password"
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                onChange={handleChange('password')}
+                variant="outlined"
+                label="Password"
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                helperText={errors.password?.message || ''}
+                error={!!errors.password}
+              />
+            </FormControl>
           </CardContent>
+
           <CardActions>
             <Button
               type="submit"

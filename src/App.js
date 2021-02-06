@@ -10,7 +10,11 @@ const store = configureStore()
 export default function App() {
   return (
     <Provider store={store}>
-      <ToastProvider>
+      <ToastProvider
+        autoDismiss
+        autoDismissTimeout={3000}
+        placement="bottom-center"
+      >
         <Router>
           <Layout />
         </Router>

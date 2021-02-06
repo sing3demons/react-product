@@ -13,12 +13,16 @@ import {
   OutlinedInput,
   Container,
   CardMedia,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import logo_auth from 'assets/images/authen_header.jpg'
 import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { useToasts } from 'react-toast-notifications'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles()
   const history = useHistory()
+  const { addToast } = useToasts()
 
   const [values, setValues] = useState({ password: '', showPassword: false })
   const handleChange = (prop) => (event) =>
@@ -54,15 +59,33 @@ export default function Login() {
 
   const schema = yup.object().shape({
     email: yup.string().required().email('รูปแบบอีเมล์ไม่ถูกต้อง'),
-    password: yup.string().required().min(4, 'รหัสผ่านต้อง 3 ตัวอักษรขึ้นไป'),
+    password: yup.string().required().min(4),
   })
 
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   })
 
-  const submit = (data) => {
-    console.log(data)
+  const submit = async ({ email, password }) => {
+    try {
+      const { data } = await axios.post('/auth/login', { email, password })
+
+      localStorage.setItem('token', JSON.stringify(data))
+
+      const getProfile = await axios.get('/auth/profile', {
+        headers: { Authorization: `Bearer ${data.token}` },
+      })
+
+      localStorage.setItem('profile', JSON.stringify(getProfile.data.user))
+
+      addToast('Login suscess', { appearance: 'success' })
+      history.push('/')
+      history.go(0)
+    } catch (error) {
+      addToast(error.response.data.error, {
+        appearance: 'error',
+      })
+    }
   }
 
   return (
@@ -90,32 +113,35 @@ export default function Login() {
               error={!!errors.email}
             />
 
-            <OutlinedInput
-              id="password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
-              inputRef={register}
-              variant="outlined"
-              label="Password"
-              placeholder="password"
-              name="password"
-              autoComplete="current-password"
-              fullWidth
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              helperText={errors.password?.message || ''}
-              error={!!errors.password}
-            />
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                inputRef={register}
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                onChange={handleChange('password')}
+                variant="outlined"
+                label="Password"
+                name="password"
+                autoComplete="current-password"
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                helperText={errors.password?.message || ''}
+                error={!!errors.password}
+              />
+            </FormControl>
           </CardContent>
           <CardActions>
             <Button

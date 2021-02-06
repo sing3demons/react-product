@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
@@ -8,20 +8,18 @@ import {
   Link,
   Menu,
   MenuItem,
+  Select,
   Switch,
   Toolbar,
 } from '@material-ui/core'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import logo from 'assets/images/logo.png'
-
 import {
   AccountCircle,
   ShoppingCart,
   MoreVert as MoreIcon,
 } from '@material-ui/icons'
-
 import { useDispatch, useSelector } from 'react-redux'
-
 import * as productActions from '../actions'
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
-
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -69,6 +66,7 @@ export default function Header() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
+  const [profile, setProfile] = useState(null)
 
   const darkMode = useSelector((state) => state.ui.darkMode)
   const cartCount = useSelector((state) => state.cart.total)
@@ -76,27 +74,21 @@ export default function Header() {
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
-
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
   }
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null)
   }
-
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
   }
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget)
   }
-
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
@@ -108,20 +100,45 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link underline="none" color="inherit" component={RouterLink} to="/user">
-        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-      </Link>
-      <Link
-        underline="none"
-        color="inherit"
-        component={RouterLink}
-        to="/user/register"
-      >
-        <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-      </Link>
+      {profile ? (
+        <>
+          <Link underline="none" color="inherit" component={RouterLink}>
+            <MenuItem onClick={handleMenuClose}>{profile.name}</MenuItem>
+          </Link>
+          <Link underline="none" color="inherit" component={RouterLink}>
+            <MenuItem
+              onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('profile')
+                history.go(0)
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/user"
+          >
+            <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+          </Link>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/user/register"
+          >
+            <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+          </Link>
+        </>
+      )}
     </Menu>
   )
-
   const mobileMenuId = 'primary-search-account-menu-mobile'
   const renderMobileMenu = (
     <Menu
@@ -143,12 +160,39 @@ export default function Header() {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
+        {/* <Link
+          underline="none"
+          color="inherit"
+          component={RouterLink}
+          to="/user"
+        >
+          <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+        </Link>
+        <Link
+          underline="none"
+          color="inherit"
+          component={RouterLink}
+          to="/user/register"
+        >
+          <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+        </Link> */}
       </MenuItem>
     </Menu>
   )
 
   const navigateToCart = () => history.push('/cart')
   const toggleDarkMode = () => dispatch(productActions.toggleDarkMode())
+
+  const getProfile = () => {
+    const profileValue = JSON.parse(localStorage.getItem('profile'))
+    if (profileValue) {
+      setProfile(profileValue)
+    }
+  }
+
+  useEffect(() => {
+    getProfile()
+  }, [])
 
   return (
     <div className={classes.grow}>
