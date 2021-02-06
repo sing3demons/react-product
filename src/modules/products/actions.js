@@ -12,9 +12,13 @@ function loadProducts(query) {
     dispatch({ type: LOAD_PRODUCTS_REQUEST })
     try {
       const { data } = await axios.get(`/products${query}`)
+
       dispatch({
         type: LOAD_PRODUCTS_SUCCESS,
-        payload: { products: data.products.items },
+        payload: {
+          products: data.products.items,
+          paging: data.products.paging,
+        },
       })
     } catch (error) {
       dispatch({ type: LOAD_PRODUCTS_FAILURE })

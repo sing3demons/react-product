@@ -10,6 +10,7 @@ import {
 const initialState = {
   isLoading: false,
   items: [],
+  paging: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -19,7 +20,12 @@ export default function (state = initialState, action) {
     case LOAD_PRODUCT_REQUEST:
       return { ...state, isLoading: true, items: [] }
     case LOAD_PRODUCTS_SUCCESS:
-      return { ...state, isLoading: false, items: action.payload.products }
+      return {
+        ...state,
+        isLoading: false,
+        items: action.payload.products,
+        paging: action.payload.paging,
+      }
     case LOAD_PRODUCT_SUCCESS:
       return { ...state, isLoading: false, items: [action.payload.product] }
     case LOAD_PRODUCTS_FAILURE:

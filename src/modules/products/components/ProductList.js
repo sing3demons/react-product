@@ -8,8 +8,14 @@ import * as actions from '../actions'
 import CategoryList from '../../category/components/CategoryList'
 import ProductItem from './ProductItem'
 import { useDispatch, useSelector } from 'react-redux'
+import Pagination from '@material-ui/lab/Pagination'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      marginTop: theme.spacing(2),
+    },
+  },
   title: {
     textAlign: 'center',
     marginBottom: theme.spacing(2),
@@ -24,7 +30,9 @@ export default function ProductList() {
   const { search } = useLocation()
   const { category } = queryString.parse(search)
   const dispatch = useDispatch()
-  const { isLoading, items: products } = useSelector((state) => state.products)
+  const { isLoading, items: products, paging } = useSelector(
+    (state) => state.products
+  )
 
   useEffect(() => {
     const action = actions.loadProducts(search)
@@ -32,7 +40,7 @@ export default function ProductList() {
   }, [dispatch, search])
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography variant="h4" component="h1" className={classes.title}>
         {category ? (
           <>
@@ -58,6 +66,12 @@ export default function ProductList() {
           ))}
         </Grid>
       )}
+      <Pagination
+        count={paging.totalPage}
+        page={paging.page}
+        variant="outlined"
+        color="primary"
+      />
     </div>
   )
 }

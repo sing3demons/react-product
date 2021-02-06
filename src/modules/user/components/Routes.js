@@ -1,5 +1,6 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom'
+import { Switch, useRouteMatch, Redirect } from 'react-router-dom'
+import { LoginRoute } from 'utils/privateRoute'
 import Login from './Login'
 import Register from './Register'
 
@@ -7,11 +8,11 @@ export default function Routes() {
   const { path } = useRouteMatch()
   return (
     <Switch>
-      <Route path={`${path}/login`} component={Login} />
-      <Route path={`${path}/register`} component={Register} />
-      <Route exact path={`${path}`}>
-        <Redirect to="/user/login" />
-      </Route>
+      <LoginRoute path={`${path}/login`} component={Login} />
+      <LoginRoute path={`${path}/register`} component={Register} />
+      <LoginRoute exact path={`${path}`}>
+        <Redirect to="/users/login" />
+      </LoginRoute>
     </Switch>
   )
 }

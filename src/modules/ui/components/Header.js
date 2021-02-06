@@ -8,12 +8,12 @@ import {
   Link,
   Menu,
   MenuItem,
-  Select,
   Switch,
   Toolbar,
 } from '@material-ui/core'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import logo from 'assets/images/logo.png'
+import userLogo from 'assets/images/user_logo.png'
 import {
   AccountCircle,
   ShoppingCart,
@@ -23,6 +23,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as productActions from '../actions'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    ...theme.typography.button,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1),
+  },
   appBar: {
     zIndex: theme.zIndex.drawer,
   },
@@ -101,29 +106,27 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       {profile ? (
-        <>
-          <Link underline="none" color="inherit" component={RouterLink}>
-            <MenuItem onClick={handleMenuClose}>{profile.name}</MenuItem>
-          </Link>
-          <Link underline="none" color="inherit" component={RouterLink}>
-            <MenuItem
-              onClick={() => {
-                localStorage.removeItem('token')
-                localStorage.removeItem('profile')
-                history.go(0)
-              }}
-            >
-              Logout
-            </MenuItem>
-          </Link>
-        </>
+        <div className={classes.root}>
+          <MenuItem>
+            <b>name: {profile.name}</b>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              localStorage.removeItem('token')
+              localStorage.removeItem('profile')
+              history.go(0)
+            }}
+          >
+            Logout
+          </MenuItem>
+        </div>
       ) : (
-        <>
+        <div className={classes.root}>
           <Link
             underline="none"
             color="inherit"
             component={RouterLink}
-            to="/user"
+            to="/users"
           >
             <MenuItem onClick={handleMenuClose}>Login</MenuItem>
           </Link>
@@ -131,11 +134,11 @@ export default function Header() {
             underline="none"
             color="inherit"
             component={RouterLink}
-            to="/user/register"
+            to="/users/register"
           >
             <MenuItem onClick={handleMenuClose}>Register</MenuItem>
           </Link>
-        </>
+        </div>
       )}
     </Menu>
   )
@@ -150,33 +153,41 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-        {/* <Link
-          underline="none"
-          color="inherit"
-          component={RouterLink}
-          to="/user"
-        >
-          <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-        </Link>
-        <Link
-          underline="none"
-          color="inherit"
-          component={RouterLink}
-          to="/user/register"
-        >
-          <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-        </Link> */}
-      </MenuItem>
+      {profile ? (
+        <div className={classes.root}>
+          <MenuItem>
+            <b>name: {profile.name}</b>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              localStorage.removeItem('token')
+              localStorage.removeItem('profile')
+              history.go(0)
+            }}
+          >
+            Logout
+          </MenuItem>
+        </div>
+      ) : (
+        <div>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/users"
+          >
+            <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+          </Link>
+          <Link
+            underline="none"
+            color="inherit"
+            component={RouterLink}
+            to="/users/register"
+          >
+            <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+          </Link>
+        </div>
+      )}
     </Menu>
   )
 
@@ -251,7 +262,15 @@ export default function Header() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {!profile ? (
+                <AccountCircle />
+              ) : (
+                <img
+                  style={{ width: 25, height: 25 }}
+                  src={profile.avatar || userLogo}
+                  alt="profile"
+                />
+              )}
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

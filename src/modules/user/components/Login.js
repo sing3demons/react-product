@@ -78,7 +78,7 @@ export default function Login() {
 
       localStorage.setItem('profile', JSON.stringify(getProfile.data.user))
 
-      addToast('Login suscess', { appearance: 'success' })
+      addToast('Login success', { appearance: 'success' })
       history.push('/')
       history.go(0)
     } catch (error) {
