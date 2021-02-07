@@ -21,7 +21,6 @@ import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import logo_auth from 'assets/images/auth_header.jpg'
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
 import { useToasts } from 'react-toast-notifications'
 import * as userActions from '../actions'
 import { useDispatch } from 'react-redux'
@@ -71,21 +70,12 @@ export default function Login() {
 
   const submit = async ({ email, password }) => {
     try {
-      const { data } = await axios.post('/auth/login', { email, password })
-
-      localStorage.setItem('token', JSON.stringify(data))
-
-      const getProfile = await axios.get('/auth/profile', {
-        headers: { Authorization: `Bearer ${data.token}` },
-      })
-
-      localStorage.setItem('profile', JSON.stringify(getProfile.data.user))
-
-      
-      const profileValue = JSON.parse(localStorage.getItem('profile'))
-      dispatch(userActions.updateProfile(profileValue))
-      addToast('Login success', { appearance: 'success' })
-      history.push('/')
+      await dispatch(userActions.loginSuccess({ email, password }))
+      await dispatch(
+        userActions.updateProfile(JSON.parse(localStorage.getItem('profile')))
+      )
+      await addToast('Login success', { appearance: 'success' })
+      await history.replace('/')
     } catch (error) {
       addToast(error.response.data.error, {
         appearance: 'error',

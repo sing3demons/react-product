@@ -13,7 +13,7 @@ export default function App() {
       <ToastProvider
         autoDismiss
         autoDismissTimeout={3000}
-        placement="top-center"
+        placement="bottom-center"
       >
         <ConnectedRouter history={history}>
           <Layout></Layout>
