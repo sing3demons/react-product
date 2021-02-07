@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import userLogo from 'assets/images/user_logo.png'
-import { updateProfile } from 'modules/user/actions'
+import { updateProfile } from '../actions'
 import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
@@ -18,34 +18,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function HomePage() {
+export default function Profile() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const { profile } = useSelector((state) => state.users)
 
-  // const getProfile = () => {
-  //   const profileValue = JSON.parse(localStorage.getItem('profile'))
-  //   if (profileValue) {
-  //     dispatch(updateProfile(profileValue))
-  //   }
-  // }
-
   useEffect(() => {
-    const profileValue = JSON.parse(localStorage.getItem('profile'))
-    dispatch(updateProfile(profileValue))
+    dispatch(updateProfile(JSON.parse(localStorage.getItem('profile'))))
   }, [dispatch])
 
   return (
     <>
-      <h1 className={classes.title}>ยินดีต้อนรับ</h1>
-      <h2 className={classes.title}>{profile && profile.name}</h2>
-      <h3 className={classes.progress}>
+      <h1 className={classes.progress}>Welcome</h1>
+      <h1 className={classes.progress}>
         <img
           className={classes.logoImage}
           src={(profile && profile.avatar) || userLogo}
           alt="Profile"
         />
-      </h3>
+      </h1>
+      <h2 className={classes.title}>{profile && `Name: ${profile.name}`}</h2>
+      <h2 className={classes.title}>{profile && `Email: ${profile.email}`}</h2>
+      <h2 className={classes.title}>{profile && `Role: ${profile.role}`}</h2>
     </>
   )
 }

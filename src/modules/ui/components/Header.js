@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -11,17 +12,18 @@ import {
   Switch,
   Toolbar,
 } from '@material-ui/core'
-import { Link as RouterLink, useHistory } from 'react-router-dom'
-import logo from 'assets/images/logo.png'
-import userLogo from 'assets/images/user_logo.png'
 import {
   AccountCircle,
   ShoppingCart,
   MoreVert as MoreIcon,
 } from '@material-ui/icons'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import * as productActions from '../actions'
 import * as usersActions from 'modules/user/actions'
+
+import logo from 'assets/images/logo.png'
+import userLogo from 'assets/images/user_logo.png'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +68,17 @@ export default function Header() {
   const cartCount = useSelector((state) => state.cart.total)
   const cart = useSelector((state) => state.cart.cart)
 
+  const getProfile = () => {
+    const profileValue = JSON.parse(localStorage.getItem('profile'))
+    if (profileValue) {
+      dispatch(usersActions.updateProfile(profileValue))
+    }
+  }
+
+  useEffect(() => {
+    getProfile()
+  }, [])
+
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
   const isMenuOpen = Boolean(anchorEl)
@@ -88,13 +101,14 @@ export default function Header() {
     <div>
       {profile ? (
         <div className={classes.root}>
-          <MenuItem>
+          <MenuItem onClick={() => history.push('/users/profile')}>
             <b>name: {profile.name}</b>
           </MenuItem>
           <MenuItem
             onClick={() => {
               localStorage.removeItem('token')
               localStorage.removeItem('profile')
+              history.replace('/')
               dispatch(usersActions.updateProfile(null))
             }}
           >
@@ -157,16 +171,12 @@ export default function Header() {
   const navigateToCart = () => history.push('/cart')
   const toggleDarkMode = () => dispatch(productActions.toggleDarkMode())
 
-  const getProfile = () => {
-    const profileValue = JSON.parse(localStorage.getItem('profile'))
-    if (profileValue) {
-      dispatch(usersActions.updateProfile(profileValue))
-    }
-  }
-
-  useEffect(() => {
-    getProfile()
-  }, [])
+  // const getProfile = () => {
+  //   const profileValue = JSON.parse(localStorage.getItem('profile'))
+  //   if (profileValue) {
+  //   dispatch(usersActions.updateProfile(profileValue))
+  //   }
+  // }
 
   return (
     <div className={classes.grow}>

@@ -81,10 +81,10 @@ export default function Login() {
 
       localStorage.setItem('profile', JSON.stringify(getProfile.data.user))
 
-      addToast('Login success', { appearance: 'success' })
-
+      
       const profileValue = JSON.parse(localStorage.getItem('profile'))
       dispatch(userActions.updateProfile(profileValue))
+      addToast('Login success', { appearance: 'success' })
       history.push('/')
     } catch (error) {
       addToast(error.response.data.error, {
