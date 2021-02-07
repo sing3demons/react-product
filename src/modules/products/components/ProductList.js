@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Typography, Grid, CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import queryString from 'query-string'
@@ -9,6 +9,7 @@ import CategoryList from '../../category/components/CategoryList'
 import ProductItem from './ProductItem'
 import { useDispatch, useSelector } from 'react-redux'
 import Pagination from '@material-ui/lab/Pagination'
+import PaginationItem from '@material-ui/lab/PaginationItem'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,8 +73,19 @@ export default function ProductList() {
             className={classes.root}
             count={paging.totalPage}
             page={paging.page}
+            showFirstButton
+            showLastButton
             variant="outlined"
             color="primary"
+            renderItem={(item) => (
+              <PaginationItem
+                type={'start-ellipsis'}
+                component={Link}
+                selected
+                to={`?page=${item.page}`}
+                {...item}
+              />
+            )}
           />
         </div>
       )}
