@@ -46,6 +46,7 @@ export default function ProductDetail() {
       image: product.image,
       price: product.price,
       qty: 1,
+      total: product.price,
     }
 
     dispatch(cartActions.addToCart(products, cart))

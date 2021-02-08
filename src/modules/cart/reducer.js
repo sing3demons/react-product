@@ -3,6 +3,7 @@ const initialState = {
   cart: [],
   total: 0,
   productId: [],
+  price: 0,
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -13,6 +14,7 @@ export default function (state = initialState, action) {
         ...state,
         cart: action.payload.cart,
         total: action.payload.total,
+        price: action.payload.price,
       }
     case REMOVE_FROM_CART:
       let cartCount = state.cart.filter((c) => c.id !== action.payload.id)

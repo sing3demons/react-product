@@ -6,7 +6,7 @@ import uiReducer from 'modules/ui/reducer'
 import category from 'modules/category/reducer'
 import users from 'modules/user/reducer'
 
-// eslint-disable-next-line 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (history) =>
   combineReducers({
     router: connectRouter(history),

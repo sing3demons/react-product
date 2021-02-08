@@ -3,26 +3,28 @@ const REMOVE_FROM_CART = 'app/cart/REMOVE_FROM_CART'
 
 function addToCart(product = {}, cart = []) {
   let exists = false
+  // let itemPrice = 0
   if (cart.length > 0) {
     for (const c of cart) {
       if (c.id === product.id) {
         c.qty++
+        product.total = c.qty * c.price
+
         exists = true
       }
     }
   }
-
   if (!exists) {
     cart.push(product)
   }
-
   const total = cart.reduce((totalQty, product) => totalQty + product.qty, 0)
-  //   localStorage.setItem('cart', JSON.stringify(cart))
+
   return {
     type: ADD_TO_CART,
     payload: {
       cart,
       total,
+      price: product.total * product.price,
     },
   }
 }

@@ -7,8 +7,8 @@ import Header from './Header'
 import * as actions from '../actions'
 
 export default function Layout() {
-  const darkMode = useSelector((state) => state.ui.darkMode)
   const dispatch = useDispatch()
+  const { darkMode } = useSelector((state) => state.ui)
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = createMuiTheme({
