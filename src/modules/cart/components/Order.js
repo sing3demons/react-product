@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Order() {
   const classes = useStyles()
-  const { cart } = useSelector((state) => state.cart)
+  const { cart, price } = useSelector((state) => state.cart)
   const products = cart
-  const price = 0
+  // const price = 0
 
   return (
     <>

@@ -32,7 +32,7 @@ export default function CartProduct({ id, image, name, price, qty, total }) {
   const { cart } = useSelector((state) => state.cart)
 
   const removeCart = () => {
-    dispatch(actions.removeFromCart(id, qty, cart))
+    dispatch(actions.removeFromCart(id, qty, cart, total))
   }
 
   return (

@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
         ...state,
         cart: cartCount,
         total: state.total - total,
-        price: 0,
+        price: state.price - action.payload.price,
       }
     default:
       return state

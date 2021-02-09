@@ -29,13 +29,14 @@ function addToCart(product = {}, cart = [], totalPrice = 0) {
   }
 }
 
-function removeFromCart(id, productQty, cart = []) {
+function removeFromCart(id, productQty, cart = [], price) {
   return {
     type: REMOVE_FROM_CART,
     payload: {
       id,
       cart,
       total: productQty,
+      price,
     },
   }
 }
