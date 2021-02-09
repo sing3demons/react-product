@@ -14,7 +14,7 @@ export default function (state = initialState, action) {
         ...state,
         cart: action.payload.cart,
         total: action.payload.total,
-        price: action.payload.price,
+        price: action.payload.price + state.price,
       }
     case REMOVE_FROM_CART:
       let cartCount = state.cart.filter((c) => c.id !== action.payload.id)
@@ -24,6 +24,7 @@ export default function (state = initialState, action) {
         ...state,
         cart: cartCount,
         total: state.total - total,
+        price: 0,
       }
     default:
       return state

@@ -7,6 +7,7 @@ import { Grid, Paper, Typography, ButtonGroup, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import * as productAction from '../actions'
 import * as cartActions from 'modules/cart/actions'
+import currencyFormat from 'utils/currencyFormat'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,12 +29,11 @@ export default function ProductDetail() {
   const dispatch = useDispatch()
   const [product] = useSelector((state) => state.products.items)
   const { cart } = useSelector((state) => state.cart)
-  // const exists = productIds.includes(id)
+
   const classes = useStyles()
   const history = useHistory()
   const theme = useTheme()
   const isMediumUp = useMediaQuery(theme.breakpoints.up('md'))
-  // const action = productAction.loadProduct(id)
 
   useEffect(() => {
     dispatch(productAction.loadProduct(id))
@@ -81,6 +81,7 @@ export default function ProductDetail() {
                 {product.name}
               </Typography>
               <p>{product.desc}</p>
+              <p>{currencyFormat(product.price)}</p>
             </Grid>
             <Grid item>
               <ButtonGroup

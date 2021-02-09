@@ -14,10 +14,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Cart() {
   const classes = useStyles()
   const { total } = useSelector((state) => state.cart)
-  // const { cart } = JSON.parse(localStorage.getItem('persist:root'))  
-  // const profile = JSON.parse(cart)
-  // console.log(cart)
-  // console.log(profile.cart)
 
   if (total === 0)
     return (
