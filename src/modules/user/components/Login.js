@@ -22,8 +22,8 @@ import { Visibility, VisibilityOff } from '@material-ui/icons'
 import logo_auth from 'assets/images/auth_header.jpg'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
-import * as userActions from '../actions'
 import { useDispatch } from 'react-redux'
+import { loginSuccess, updateProfile } from '../actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,12 +53,11 @@ export default function Login() {
   const [values, setValues] = useState({ password: '', showPassword: false })
   const handleChange = (prop) => (event) =>
     setValues({ ...values, [prop]: event.target.value })
-
   const handleClickShowPassword = () =>
     setValues({ ...values, showPassword: !values.showPassword })
-
   const handleMouseDownPassword = (event) => event.preventDefault()
 
+  //Validation - yup
   const schema = yup.object().shape({
     email: yup.string().required().email('invalid email format'),
     password: yup.string().required().min(4),
@@ -70,12 +69,10 @@ export default function Login() {
 
   const submit = async ({ email, password }) => {
     try {
-      await dispatch(userActions.loginSuccess({ email, password }))
-      await dispatch(
-        userActions.updateProfile(JSON.parse(localStorage.getItem('profile')))
-      )
+      await dispatch(loginSuccess({ email, password }))
+      await dispatch(updateProfile(JSON.parse(localStorage.getItem('profile'))))
       await addToast('Login success', { appearance: 'success' })
-      await history.replace('/')
+      await history.push('/')
     } catch (error) {
       addToast(error.response.data.error, {
         appearance: 'error',

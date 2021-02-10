@@ -1,13 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 
 export const LoginRoute = ({ component: Component, ...rest }) => {
-  let isAuth = false
-  const token = JSON.parse(localStorage.getItem('token'))
-
-  if (token) {
-    isAuth = true
-  }
+  const { isAuth } = useSelector((state) => state.users)
   return (
     <Route
       {...rest}

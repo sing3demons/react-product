@@ -23,13 +23,6 @@ export default function HomePage() {
   const dispatch = useDispatch()
   const { profile } = useSelector((state) => state.users)
 
-  // const getProfile = () => {
-  //   const profileValue = JSON.parse(localStorage.getItem('profile'))
-  //   if (profileValue) {
-  //     dispatch(updateProfile(profileValue))
-  //   }
-  // }
-
   useEffect(() => {
     const profileValue = JSON.parse(localStorage.getItem('profile'))
     dispatch(updateProfile(profileValue))

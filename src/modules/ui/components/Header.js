@@ -65,19 +65,12 @@ export default function Header() {
   const { profile } = useSelector((state) => state.users)
 
   const darkMode = useSelector((state) => state.ui.darkMode)
-  const cartCount = useSelector((state) => state.cart.total)
-  const cart = useSelector((state) => state.cart.cart)
-
-  const getProfile = () => {
-    const profileValue = JSON.parse(localStorage.getItem('profile'))
-    if (profileValue) {
-      dispatch(usersActions.updateProfile(profileValue))
-    }
-  }
+  const { total: cartCount, cart } = useSelector((state) => state.cart)
 
   useEffect(() => {
-    getProfile()
-  }, [])
+    const profileValue = JSON.parse(localStorage.getItem('profile'))
+    dispatch(usersActions.updateProfile(profileValue))
+  }, [dispatch])
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
@@ -171,13 +164,6 @@ export default function Header() {
   const navigateToCart = () => history.push('/cart')
   const toggleDarkMode = () => dispatch(productActions.toggleDarkMode())
 
-  // const getProfile = () => {
-  //   const profileValue = JSON.parse(localStorage.getItem('profile'))
-  //   if (profileValue) {
-  //   dispatch(usersActions.updateProfile(profileValue))
-  //   }
-  // }
-
   return (
     <div className={classes.grow}>
       <AppBar position="fixed">
@@ -195,14 +181,27 @@ export default function Header() {
               className={classes.logoImage}
             />
           </Link>
+
           <Link
             component={RouterLink}
             to="/products"
             color="inherit"
             underline="none"
+            className={classes.logoLink}
           >
             Products
           </Link>
+          {profile && profile.role === 'Admin' && (
+            <Link
+              component={RouterLink}
+              to="/products/create"
+              color="inherit"
+              underline="none"
+            >
+              Add Products
+            </Link>
+          )}
+
           <div className={classes.spacer}></div>
           <FormControlLabel
             control={
