@@ -9,7 +9,7 @@ export default function Routes() {
   const { path } = useRouteMatch()
   return (
     <Switch>
-      <LoginRoute path={`${path}/create`} component={ProductAdd} />
+      <Route path={`${path}/create`} component={ProductAdd} />
       <Route path={`${path}/:id`} component={ProductDetail} />
       <Route exact path={`${path}`} component={ProductList} />
     </Switch>

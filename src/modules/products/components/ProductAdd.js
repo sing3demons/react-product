@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -26,6 +26,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductAdd() {
   const classes = useStyles()
+  const [image, setImage] = useState({ preview: '', raw: '' })
+
+  const handleChange = (e) => {
+    if (e.target.files.length) {
+      setImage({
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0],
+      })
+    }
+  }
 
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -55,79 +65,94 @@ export default function ProductAdd() {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} autoComplete="off">
-      <Card>
-        <CardContent className={classes.form}>
-          <Typography variant="h5" component="h2">
-            Add Product
-          </Typography>
-          <TextField
-            name="name"
-            inputRef={register}
-            variant="outlined"
-            label="Name"
-            placeholder="Enter your name"
-            fullWidth
-            helperText={errors.name?.message || ''}
-            error={!!errors.name}
-          />
+    <>
+      <form onSubmit={handleSubmit(submit)} autoComplete="off">
+        <Card>
+          <CardContent className={classes.form}>
+            <Typography variant="h5" component="h2">
+              Add Product
+            </Typography>
+            <TextField
+              name="name"
+              inputRef={register}
+              variant="outlined"
+              label="Name"
+              placeholder="Enter your name"
+              fullWidth
+              helperText={errors.name?.message || ''}
+              error={!!errors.name}
+            />
 
-          <TextField
-            inputRef={register}
-            variant="outlined"
-            label="Desc"
-            placeholder="Enter your Description"
-            name="desc"
-            fullWidth
-            helperText={errors.desc?.message || ''}
-            error={!!errors.desc}
-          />
+            <TextField
+              inputRef={register}
+              variant="outlined"
+              label="Desc"
+              placeholder="Enter your Description"
+              name="desc"
+              fullWidth
+              helperText={errors.desc?.message || ''}
+              error={!!errors.desc}
+            />
 
-          <TextField
-            inputRef={register}
-            variant="outlined"
-            label="Price"
-            placeholder="Enter your price"
-            name="price"
-            fullWidth
-            helperText={errors.price?.message || ''}
-            error={!!errors.price}
-          />
-          {/* <input type="number" name="price" ref={register} />
+            <TextField
+              inputRef={register}
+              variant="outlined"
+              label="Price"
+              placeholder="Enter your price"
+              name="price"
+              fullWidth
+              helperText={errors.price?.message || ''}
+              error={!!errors.price}
+            />
+            {/* <input type="number" name="price" ref={register} />
           <input type="number" name="categoryId" ref={register} /> */}
-          <TextField
-            inputRef={register}
-            variant="outlined"
-            label="CategoryID"
-            placeholder="Enter your ID"
-            name="categoryId"
-            fullWidth
-            helperText={errors.categoryId?.message || ''}
-            error={!!errors.categoryId}
-          />
-          <input
-            // ref={register}
-            type="file"
-            name="image"
-            ref={register({
-              required: 'กรุณาเลือกไฟล์ภาพก่อน',
-              validate: {
-                checkFileType: (value) => {},
-              },
-            })}
-          />
-        </CardContent>
-        <CardActions>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submitBtn}
-          >
-            Add Product
-          </Button>
-        </CardActions>
-      </Card>
-    </form>
+            <TextField
+              inputRef={register}
+              variant="outlined"
+              label="CategoryID"
+              placeholder="Enter your ID"
+              name="categoryId"
+              fullWidth
+              helperText={errors.categoryId?.message || ''}
+              error={!!errors.categoryId}
+            />
+
+            {image.preview ? (
+              <img src={image.preview} alt="dummy" width="300" height="300" />
+            ) : (
+              <>
+                <span className="fa-stack fa-2x mt-3 mb-2">
+                  <i className="fas fa-circle fa-stack-2x" />
+                  <i className="fas fa-store fa-stack-1x fa-inverse" />
+                </span>
+                <h5 className="text-center">Upload your photo</h5>
+              </>
+            )}
+
+            <input
+              type="file"
+              name="image"
+              onChange={handleChange}
+              ref={register({
+                required: 'กรุณาเลือกไฟล์ภาพก่อน',
+                validate: {
+                  checkFileType: (value) => {},
+                },
+              })}
+            />
+          </CardContent>
+          <CardActions>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submitBtn}
+            >
+              Add Product
+            </Button>
+          </CardActions>
+        </Card>
+      </form>
+    </>
   )
 }
