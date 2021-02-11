@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import userLogo from 'assets/images/user_logo.png'
 import { updateProfile } from '../actions'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from '@material-ui/core'
+import { history } from 'store/configureStore'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -28,7 +30,7 @@ export default function Profile() {
   }, [dispatch])
 
   return (
-    <>
+    <div className={classes.title}>
       <h1 className={classes.progress}>Welcome</h1>
       <h1 className={classes.progress}>
         <img
@@ -37,9 +39,16 @@ export default function Profile() {
           alt="Profile"
         />
       </h1>
-      <h2 className={classes.title}>{profile && `Name: ${profile.name}`}</h2>
-      <h2 className={classes.title}>{profile && `Email: ${profile.email}`}</h2>
-      <h2 className={classes.title}>{profile && `Role: ${profile.role}`}</h2>
-    </>
+      <h2>{profile && `Name: ${profile.name}`}</h2>
+      <h2>{profile && `Email: ${profile.email}`}</h2>
+      <h2>{profile && `Role: ${profile.role}`}</h2>
+      <Button
+        size="small"
+        color="primary"
+        onClick={() => history.push('/stock')}
+      >
+        Menu Admin
+      </Button>
+    </div>
   )
 }

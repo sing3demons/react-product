@@ -12,6 +12,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
+import { useToasts } from 'react-toast-notifications'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -24,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ProductAdd() {
+export default function StockAddProduct() {
   const classes = useStyles()
+  const { token } = JSON.parse(localStorage.getItem('token'))
+  const { addToast } = useToasts()
   const [image, setImage] = useState({ preview: '', raw: '' })
 
   const handleChange = (e) => {
@@ -57,10 +60,12 @@ export default function ProductAdd() {
       formData.append('categoryId', product.categoryId)
       formData.append('image', product.image[0])
 
-      const { data } = await axios.post('/products', formData)
-      console.log(data)
+      await axios.post('/products', formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      addToast('success', { appearance: 'success' })
     } catch (error) {
-      console.log(error.response.data.error)
+      addToast(`error ${error.response.data.error}`, { appearance: 'error' })
     }
   }
 

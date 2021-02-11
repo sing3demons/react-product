@@ -1,9 +1,8 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import ProductAdd from './ProductAdd'
+import ProductAdd from '../../stock/components/StockAddProduct'
 import ProductDetail from './ProductDetail'
 import ProductList from './ProductList'
-import { LoginRoute } from 'utils/loginRoute'
 
 export default function Routes() {
   const { path } = useRouteMatch()

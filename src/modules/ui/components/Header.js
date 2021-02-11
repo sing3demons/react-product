@@ -191,16 +191,6 @@ export default function Header() {
           >
             Products
           </Link>
-          {profile && profile.role === 'Admin' && (
-            <Link
-              component={RouterLink}
-              to="/products/create"
-              color="inherit"
-              underline="none"
-            >
-              Add Products
-            </Link>
-          )}
 
           <div className={classes.spacer}></div>
           <FormControlLabel
