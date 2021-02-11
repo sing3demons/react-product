@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Switch, useRouteMatch } from 'react-router-dom'
 import { LoginRoute } from 'utils/loginRoute'
 import Stock from './Stock'
 import StockAddProduct from './StockAddProduct'
@@ -10,7 +10,7 @@ export default function Routes() {
   return (
     <Switch>
       <LoginRoute path={`${path}/create`} component={StockAddProduct} />
-      <LoginRoute path={`${path}/:id`} component={StockEdit} />
+      <LoginRoute path={`${path}/edit/:id`} component={StockEdit} />
       <LoginRoute exact path={`${path}`} component={Stock} />
     </Switch>
   )

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import NumberFormat from 'react-number-format'
 import Moment from 'react-moment'
 import MaterialTable, { MTableToolbar } from 'material-table'
@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import { DeleteOutline, Edit } from '@material-ui/icons'
 import * as tableIcon from './tableIcons'
-// import * as stockActions from 'modules/actions/stock.action'
+// import { loadProduct } from 'modules/products/actions'
 
 const tableIcons = tableIcon
 
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Stock(props) {
   const { items } = useSelector((state) => state.products)
+  const history = useHistory()
   // const { token } = JSON.parse(localStorage.getItem('token'))
 
   const [open, setOpen] = useState(false)
@@ -163,7 +164,7 @@ export default function Stock(props) {
       iconProps: { color: 'primary' },
       tooltip: 'Edit',
       onClick: (event, rowData) => {
-        props.history.push('/stock/edit/' + rowData.id)
+        history.push(`/stock/edit/${rowData.id}`)
       },
     },
     {
@@ -184,7 +185,7 @@ export default function Stock(props) {
           search: true,
           pageSize: 5,
           rowStyle: (rowData, index) => ({
-            backgroundColor: index % 2 == 0 ? '#f8faf9' : '#fff',
+            backgroundColor: index % 2 === 0 ? '#f8faf9' : '#fff',
           }),
         }}
         icons={tableIcons.TableIcon}
