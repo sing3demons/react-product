@@ -66,11 +66,16 @@ export default function StockEdit() {
   const submit = async (product) => {
     try {
       const formData = new FormData()
+
       formData.append('name', product.name)
+
       formData.append('desc', product.desc)
+
       formData.append('price', product.price)
+
       formData.append('categoryId', product.categoryId)
-      if (product.image !== '') {
+
+      if (product.image.length === 1) {
         formData.append('image', product.image[0])
       }
 
@@ -103,7 +108,6 @@ export default function StockEdit() {
               helperText={errors.name?.message || ''}
               error={!!errors.name}
             />
-
             <TextField
               name="desc"
               inputRef={register}
@@ -115,7 +119,6 @@ export default function StockEdit() {
               helperText={errors.desc?.message || ''}
               error={!!errors.desc}
             />
-
             <TextField
               inputRef={register}
               variant="outlined"
@@ -139,16 +142,12 @@ export default function StockEdit() {
               error={!!errors.categoryId}
             />
 
-            {product ? (
-              <img src={product.image} alt="dummy" width="300" height="300" />
+            {image.preview ? (
+              <img src={image.preview} alt="dummy" width="300" height="300" />
             ) : (
-              <>
-                <span className="fa-stack fa-2x mt-3 mb-2">
-                  <i className="fas fa-circle fa-stack-2x" />
-                  <i className="fas fa-store fa-stack-1x fa-inverse" />
-                </span>
-                <h5 className="text-center">Upload your photo</h5>
-              </>
+              product && (
+                <img src={product.image} alt="dummy" width="300" height="300" />
+              )
             )}
 
             <input

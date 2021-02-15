@@ -5,11 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import queryString from 'query-string'
 
 import * as actions from '../actions'
-import CategoryList from '../../category/components/CategoryList'
+import CategoryList from 'modules/category/components/CategoryList'
 import ProductItem from './ProductItem'
 import { useDispatch, useSelector } from 'react-redux'
-import Pagination from '@material-ui/lab/Pagination'
-import PaginationItem from '@material-ui/lab/PaginationItem'
+import { Pagination, PaginationItem } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +33,6 @@ export default function ProductList() {
   const { isLoading, items: products, paging } = useSelector(
     (state) => state.products
   )
-  // console.log(paging)
 
   useEffect(() => {
     const action = actions.loadProducts(search)

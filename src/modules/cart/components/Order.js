@@ -23,7 +23,6 @@ export default function Order() {
   const classes = useStyles()
   const { cart, price } = useSelector((state) => state.cart)
   const products = cart
-  // const price = 0
 
   return (
     <>

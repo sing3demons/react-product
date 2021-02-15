@@ -109,8 +109,7 @@ export default function StockAddProduct() {
               helperText={errors.price?.message || ''}
               error={!!errors.price}
             />
-            {/* <input type="number" name="price" ref={register} />
-          <input type="number" name="categoryId" ref={register} /> */}
+
             <TextField
               inputRef={register}
               variant="outlined"

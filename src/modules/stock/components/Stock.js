@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import NumberFormat from 'react-number-format'
 import Moment from 'react-moment'
@@ -17,7 +17,9 @@ import {
 } from '@material-ui/core'
 import { DeleteOutline, Edit } from '@material-ui/icons'
 import * as tableIcon from './tableIcons'
-// import { loadProduct } from 'modules/products/actions'
+import { loadProducts } from 'modules/products/actions'
+import axios from 'axios'
+import { useToasts } from 'react-toast-notifications'
 
 const tableIcons = tableIcon
 
@@ -29,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Stock(props) {
-  const { items } = useSelector((state) => state.products)
+  const { items, paging } = useSelector((state) => state.products)
   const history = useHistory()
-  // const { token } = JSON.parse(localStorage.getItem('token'))
+  const dispatch = useDispatch()
+  const { addToast } = useToasts()
+  const { token } = JSON.parse(localStorage.getItem('token'))
 
   const [open, setOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
@@ -78,8 +82,17 @@ export default function Stock(props) {
             Cancel
           </Button>
           <Button
-            onClick={() => {
-              //   dispatch(stockActions.deleteProduct(selectedItem.id))
+            onClick={async () => {
+              try {
+                await axios.delete(`/products/${selectedItem.id}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                })
+                addToast('success', { appearance: 'success' })
+                handleClose()
+              } catch (error) {
+                addToast('error', { appearance: 'error' })
+                handleClose()
+              }
             }}
             color="secondary"
             autoFocus
@@ -92,7 +105,7 @@ export default function Stock(props) {
   }
 
   useEffect(() => {
-    // dispatch(stockActions.getProducts())
+    dispatch(loadProducts(`?limit=${paging.count}`))
   }, [])
 
   const columns = [
@@ -190,7 +203,6 @@ export default function Stock(props) {
         }}
         icons={tableIcons.TableIcon}
         columns={columns}
-        // data={stockReducer.result ? stockReducer.result : []}
         data={items}
         title="Stock"
         actions={actions}

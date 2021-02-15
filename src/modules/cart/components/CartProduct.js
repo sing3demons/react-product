@@ -9,7 +9,6 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
-
 import currencyFormat from 'utils/currencyFormat'
 import { useDispatch, useSelector } from 'react-redux'
 import * as actions from '../actions'

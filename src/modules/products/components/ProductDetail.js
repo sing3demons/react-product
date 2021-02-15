@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/core/styles'
+import { makeStyles,useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Grid, Paper, Typography, ButtonGroup, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
