@@ -5,6 +5,7 @@ import productsReducer from 'modules/products/reducer'
 import uiReducer from 'modules/ui/reducer'
 import category from 'modules/category/reducer'
 import users from 'modules/user/reducer'
+import stock from 'modules/stock/reducer'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (history) =>
@@ -15,4 +16,5 @@ export default (history) =>
     products: productsReducer,
     category,
     users,
+    stock,
   })

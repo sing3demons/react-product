@@ -106,6 +106,7 @@ export default function Stock(props) {
 
   useEffect(() => {
     dispatch(loadProducts(`?limit=${paging.count}`))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const columns = [

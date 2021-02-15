@@ -26,8 +26,9 @@ export default function Cart() {
       <Typography variant="h4" component="h1" className={classes.title}>
         Order Summary
       </Typography>
+
       <Grid container spacing={2}>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={12}>
           <Order />
         </Grid>
       </Grid>

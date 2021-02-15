@@ -15,7 +15,7 @@ import axios from 'axios'
 import { useToasts } from 'react-toast-notifications'
 import { useHistory, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadProduct } from 'modules/products/actions'
+import { loadProduct } from 'modules/stock/actions'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -35,7 +35,7 @@ export default function StockEdit() {
   const dispatch = useDispatch()
   const { addToast } = useToasts()
   const [image, setImage] = useState({ preview: '', raw: '' })
-  const [product] = useSelector((state) => state.products.items)
+  const [product] = useSelector((state) => state.stock.items)
 
   useEffect(() => {
     dispatch(loadProduct(id))
@@ -66,13 +66,9 @@ export default function StockEdit() {
   const submit = async (product) => {
     try {
       const formData = new FormData()
-
       formData.append('name', product.name)
-
       formData.append('desc', product.desc)
-
       formData.append('price', product.price)
-
       formData.append('categoryId', product.categoryId)
 
       if (product.image.length === 1) {

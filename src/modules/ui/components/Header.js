@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
+  Avatar,
   Badge,
   FormControlLabel,
   IconButton,
@@ -227,10 +228,10 @@ export default function Header() {
               {!profile ? (
                 <AccountCircle />
               ) : (
-                <img
+                <Avatar
                   style={{ width: 25, height: 25 }}
-                  src={profile.avatar || userLogo}
                   alt="profile"
+                  src={profile.avatar || userLogo}
                 />
               )}
             </IconButton>

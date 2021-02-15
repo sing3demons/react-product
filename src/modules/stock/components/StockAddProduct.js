@@ -8,13 +8,20 @@ import {
   CardContent,
   Typography,
   Button,
+  Select,
+  MenuItem,
+  InputLabel,
 } from '@material-ui/core'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
 import { useToasts } from 'react-toast-notifications'
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
+import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
+  root: { textAlign: 'center', marginBottom: theme.spacing(2) },
   form: {
     '& > * + *': {
       marginTop: theme.spacing(2),
@@ -27,9 +34,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function StockAddProduct() {
   const classes = useStyles()
+  const history = useHistory()
+  const { categories } = useSelector((state) => state.category)
   const { token } = JSON.parse(localStorage.getItem('token'))
   const { addToast } = useToasts()
   const [image, setImage] = useState({ preview: '', raw: '' })
+
+  //Select
+  const [category, setCategory] = React.useState(0)
+  const [open, setOpen] = React.useState(false)
+  const handleChangeSelect = (event) => {
+    setCategory(event.target.value)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+  const handleOpen = () => {
+    setOpen(true)
+  }
 
   const handleChange = (e) => {
     if (e.target.files.length) {
@@ -57,9 +79,8 @@ export default function StockAddProduct() {
       formData.append('name', product.name)
       formData.append('desc', product.desc)
       formData.append('price', product.price)
-      formData.append('categoryId', product.categoryId)
+      formData.append('categoryId', category)
       formData.append('image', product.image[0])
-
       await axios.post('/products', formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -74,7 +95,14 @@ export default function StockAddProduct() {
       <form onSubmit={handleSubmit(submit)} autoComplete="off">
         <Card>
           <CardContent className={classes.form}>
-            <Typography variant="h5" component="h2">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => history.goBack()}
+            >
+              <KeyboardBackspaceIcon />
+            </Button>
+            <Typography className={classes.root} variant="h5" component="h2">
               Add Product
             </Typography>
             <TextField
@@ -110,16 +138,28 @@ export default function StockAddProduct() {
               error={!!errors.price}
             />
 
-            <TextField
+            <InputLabel id="category">Category</InputLabel>
+            <Select
               inputRef={register}
               variant="outlined"
               label="CategoryID"
               placeholder="Enter your ID"
               name="categoryId"
               fullWidth
+              labelId="categoryId"
+              id="categoryId"
+              value={category}
+              open={open}
+              onClose={handleClose}
+              onOpen={handleOpen}
+              onChange={handleChangeSelect}
               helperText={errors.categoryId?.message || ''}
               error={!!errors.categoryId}
-            />
+            >
+              {categories.map((c) => (
+                <MenuItem value={c.id}>{c.name}</MenuItem>
+              ))}
+            </Select>
 
             {image.preview ? (
               <img src={image.preview} alt="dummy" width="300" height="300" />
