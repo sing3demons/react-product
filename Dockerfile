@@ -1,16 +1,7 @@
-FROM node:16.15.0-alpine as build
+FROM node:16.15.0-alpine 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json /app/
-COPY ./yarn.lock /app/
-RUN yarn install
-COPY . /app
-RUN yarn build
+COPY . .
 
-# stage 2 - build the final image and copy the react build files
-FROM nginx:1.17.8-alpine
-COPY --from=build /app/build /usr/share/nginx/html
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx/nginx.conf /etc/nginx/conf.d
-EXPOSE ${PORT}
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm install
+CMD [ "npm",'start' ]
